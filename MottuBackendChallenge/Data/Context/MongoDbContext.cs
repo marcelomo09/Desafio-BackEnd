@@ -18,6 +18,7 @@ public class MongoDbContext: DBContext
 
         VerifyIfNotExistsCollectionAndCreated(_settings.Value.Collections.Users);
         VerifyIfNotExistsCollectionAndCreated(_settings.Value.Collections.Motorcycles);
+        VerifyIfNotExistsCollectionAndCreated(_settings.Value.Collections.DeliveryDrivers);
     }
 
     public void VerifyIfNotExistsCollectionAndCreated(string name)
@@ -32,4 +33,5 @@ public class MongoDbContext: DBContext
 
     public IMongoCollection<User> Users => _database.GetCollection<User>(_settings.Value.Collections.Users);
     public IMongoCollection<Motorcycle> Motorcycles => _database.GetCollection<Motorcycle>(_settings.Value.Collections.Motorcycles);
+    public IMongoCollection<Deliveryman> DeliveryDrivers => _database.GetCollection<Deliveryman>(_settings.Value.Collections.DeliveryDrivers);
 }

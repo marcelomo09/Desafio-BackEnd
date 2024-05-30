@@ -19,9 +19,12 @@ public class MongoCollections
 
     public string Motorcycles { get; set; }
 
+    public string DeliveryDrivers { get; set; }
+
     public MongoCollections()
     {
-        Users       = string.Empty;
-        Motorcycles = string.Empty;
+        Users           = string.Empty;
+        Motorcycles     = string.Empty;
+        DeliveryDrivers = string.Empty;
     }
 }

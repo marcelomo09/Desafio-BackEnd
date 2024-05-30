@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Mvc.Formatters;
+
 var builder = WebApplication.CreateBuilder(args);
 
 //TODO: Ao final limpar codigo
@@ -15,6 +17,9 @@ builder.Services.AddScoped<UserService>();
 
 builder.Services.AddScoped<MotorcycleRepository>();
 builder.Services.AddScoped<MotorcycleService>();
+
+builder.Services.AddScoped<DeliverymanRepository>();
+builder.Services.AddScoped<DeliverymanService>();
 
 // Add Others Configurations
 builder.Services.AddControllers();
