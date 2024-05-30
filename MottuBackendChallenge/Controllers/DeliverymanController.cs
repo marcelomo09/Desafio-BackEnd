@@ -71,6 +71,27 @@ public class DeliverymanController: ControllerBase
         }
     }
 
+    [HttpPut("UpdateImageCNH")]
+    public async Task<ActionResult> UpdateImageCNH([FromForm] string id, IFormFile imagecnh)
+    {
+        try
+        {
+            if (imagecnh == null) return BadRequest("A foto da CNH não foi enviada.");
+
+            if (imagecnh.ContentType != "image/png" && imagecnh.ContentType != "image/bmp") return BadRequest("Foto da CNH deve ser em .PNG ou .BMP!");
+
+            string imagePath = await GetPathImageCNHPathAndSaveOrReplace(imagecnh);
+
+            Response response = await _deliverymanService.UpdateImageCNHPath(id, imagePath);
+
+            return !response.Error ? Ok(response.Message) : NotFound(response.Message);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest($"Ocorreu uma exceção durante o processamento: {ex.Message}");
+        }
+    }
+
     [HttpDelete("DeleteDeliveryman")]
     public async Task<ActionResult> DeleteDeliveryman(string id)
     {

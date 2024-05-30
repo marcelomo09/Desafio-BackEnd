@@ -93,11 +93,35 @@ public class DeliverymanService
 
         if (response.Error) return response;
 
+        // Excluí o arquivo anterior caso o novo tenha um nome diferente
+        if (!string.IsNullOrEmpty(deliveryman.ImageCNHPath))
+        {
+            var deliverymanNow = await _deliverymanRepository.GetDeliveryman(deliveryman.Id ?? string.Empty);
+
+            if (deliverymanNow.ImageCNHPath != deliveryman.ImageCNHPath && File.Exists(deliveryman.ImageCNHPath)) File.Delete(deliveryman.ImageCNHPath);
+        }
+        
         await _deliverymanRepository.UpdateDeliveryman(deliveryman);
 
         response.Message = "Dados do entregador atualizados com sucesso!";
 
         return response;
+    }
+
+    public async Task<Response> UpdateImageCNHPath(string id, string imagecnhpath)
+    {
+        var deliveryman = await _deliverymanRepository.GetDeliveryman(id);
+
+        if (deliveryman == null) return new Response(true, "Entragador não identificado.", ResponseTypeResults.NotFound);
+
+        // Excluí o arquivo anterior caso o novo tenha um nome diferente
+        if (deliveryman.ImageCNHPath != imagecnhpath && File.Exists(deliveryman.ImageCNHPath)) File.Delete(deliveryman.ImageCNHPath);
+
+        deliveryman.ImageCNHPath = imagecnhpath;
+
+        await _deliverymanRepository.UpdateDeliveryman(deliveryman);
+
+        return new Response(true, "Imagem da CNH atualizada com sucesso.");
     }
 
     #endregion
