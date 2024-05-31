@@ -34,7 +34,7 @@ public class User
         Level    = string.Empty;
     }
 
-    public User(CreateUserParams param) 
+    public User(CreateUserRequest param) 
     {
         Name     = param.Name;
         Password = param.Password;

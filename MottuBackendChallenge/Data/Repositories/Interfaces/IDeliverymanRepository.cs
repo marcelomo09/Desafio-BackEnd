@@ -7,4 +7,5 @@ public interface IDeliverymanRepository
     Task DeleteDeliveryman(string id);
     Task<bool> CNPJExists(string id, string cnpj);
     Task<bool> CNHExists(string id, string cnh);
+    Task<Deliveryman> GetDeliverymanByCNH(string cnh);
 }

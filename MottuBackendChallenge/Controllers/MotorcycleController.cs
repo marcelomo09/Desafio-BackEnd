@@ -36,7 +36,7 @@ public class MotorcycleController: ControllerBase
     }
 
     [HttpPost("CreateMotorcycle")]
-    public async Task<ActionResult> CreateMotorcycle(CreateMotorcycleParams motorcycle)
+    public async Task<ActionResult> CreateMotorcycle(CreateMotorcycleRequest motorcycle)
     {
         try
         {

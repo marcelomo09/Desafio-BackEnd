@@ -6,6 +6,8 @@ public class MongoCollections
 
     public string DeliveryDrivers { get; set; }
 
+    public string MotorcycleRentals { get; set; }
+
     public RentalPricesTableSettings RentalPricesTable { get; set; }
 
     public MongoCollections()
@@ -13,6 +15,7 @@ public class MongoCollections
         Users             = string.Empty;
         Motorcycles       = string.Empty;
         DeliveryDrivers   = string.Empty;
+        MotorcycleRentals = string.Empty;
         RentalPricesTable = new RentalPricesTableSettings();
     }
 }

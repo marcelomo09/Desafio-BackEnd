@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-public class CreateDeliveryman
+public class CreateDeliverymanRequest
 {
     [Required(ErrorMessage = "Nome do entregador não informado")]
     [StringLength(50, ErrorMessage = "Tamanho máximo de caracteres é 50")]
@@ -26,7 +26,7 @@ public class CreateDeliveryman
     [Required(ErrorMessage = "Foto não enviada")]
     public IFormFile? ImageCNH { get; set; }
 
-    public CreateDeliveryman()
+    public CreateDeliverymanRequest()
     {
         Name        = string.Empty;
         CNPJ        = string.Empty;

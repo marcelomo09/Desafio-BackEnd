@@ -10,7 +10,7 @@ public class RentalPriceTableRepository : IRentalPriceTableRepository
         _context = context;
     }
 
-    public async Task CreateRentalPriceTable(RentalPriceTable value) => await _context.RentalPricesTable.InsertOneAsync(value);
+    public async Task CreateRentalPriceTable(RentalPriceTable entity) => await _context.RentalPricesTable.InsertOneAsync(entity);
 
     public async Task DeleteRentalPriceTable(string id) => await _context.RentalPricesTable.DeleteOneAsync(x => x.Id == id);
 
@@ -22,5 +22,7 @@ public class RentalPriceTableRepository : IRentalPriceTableRepository
 
     public async Task<RentalPriceTable> GetRentalPriceTableForPrice(float price) => await _context.RentalPricesTable.Find(x => x.Price == price).FirstOrDefaultAsync();
 
-    public Task UpdateRentalPriceTable(RentalPriceTable value) => _context.RentalPricesTable.ReplaceOneAsync(x => x.Id == value.Id, value);
+    public Task UpdateRentalPriceTable(RentalPriceTable entity) => _context.RentalPricesTable.ReplaceOneAsync(x => x.Id == entity.Id, entity);
+
+    public async Task<RentalPriceTable> GetPlanForDaySelected(int days) => await _context.RentalPricesTable.Find(x => x.Days == days).FirstOrDefaultAsync();
 }

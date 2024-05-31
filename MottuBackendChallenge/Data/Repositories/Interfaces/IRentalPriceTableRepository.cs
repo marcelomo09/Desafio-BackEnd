@@ -7,4 +7,5 @@ public interface IRentalPriceTableRepository
     Task CreateRentalPriceTable(RentalPriceTable value);
     Task UpdateRentalPriceTable(RentalPriceTable value);
     Task DeleteRentalPriceTable(string id);
+    Task<RentalPriceTable> GetPlanForDaySelected(int days);
 }

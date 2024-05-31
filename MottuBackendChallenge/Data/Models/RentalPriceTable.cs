@@ -19,4 +19,9 @@ public class RentalPriceTable
     [BsonRequired]
     [Required]
     public float Price { get; set; }
+
+    [BsonElement("AssessmentPercent")]
+    [BsonRequired]
+    [Required]
+    public float AssessmentPercent { get; set; }
 }

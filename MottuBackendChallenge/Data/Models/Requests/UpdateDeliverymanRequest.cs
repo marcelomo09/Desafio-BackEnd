@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-public class UpdateDeliveryman
+public class UpdateDeliverymanRequest
 {
     [Required(ErrorMessage = "Número identificador do entregador e necessário")]
     public string Id { get; set; }
@@ -28,7 +28,7 @@ public class UpdateDeliveryman
 
     public IFormFile? ImageCNH { get; set; }
 
-    public UpdateDeliveryman()
+    public UpdateDeliverymanRequest()
     {
         Id          = string.Empty;
         Name        = string.Empty;

@@ -32,7 +32,7 @@ public class DeliverymanController: ControllerBase
     }
 
     [HttpPost("CreateDeliveryman")]
-    public async Task<ActionResult> CreateDeliveryman([FromForm] CreateDeliveryman deliveryman)
+    public async Task<ActionResult> CreateDeliveryman([FromForm] CreateDeliverymanRequest deliveryman)
     {
         try
         {
@@ -53,7 +53,7 @@ public class DeliverymanController: ControllerBase
     }
 
     [HttpPut("UpdateDeliveryman")]
-    public async Task<ActionResult> UpdatDeliveryman([FromForm] UpdateDeliveryman deliveryman)
+    public async Task<ActionResult> UpdatDeliveryman([FromForm] UpdateDeliverymanRequest deliveryman)
     {
         try
         {

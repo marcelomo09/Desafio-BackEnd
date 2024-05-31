@@ -31,7 +31,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("CreateUser")]
-    public async Task<ActionResult> CreateUser(CreateUserParams user)
+    public async Task<ActionResult> CreateUser(CreateUserRequest user)
     {
         try
         {

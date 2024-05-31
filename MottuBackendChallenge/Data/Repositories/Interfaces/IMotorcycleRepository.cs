@@ -6,5 +6,7 @@ public interface IMotorcycleRepository
     Task UpdateMotorcycle(Motorcycle motorcycle);
     Task DeleteMotorcycle(string id);
     Task<bool> MotorcyclePlateExists(string id, string plate);
-    Task<Motorcycle> GetMotorcycleForPlate(string plate);
+    Task<Motorcycle> GetMotorcycleByPlate(string plate);
+    Task<List<Motorcycle>> GetMotorcylclesDinponibles();
+    Task<bool> MotorcycleInUse(string? id);
 }

@@ -27,8 +27,11 @@ public class MongoDbContext: DBContext
         await VerifyIfNotExistsCollectionAndCreatedAsync(_settings.Value.Collections.Users);
         await VerifyIfNotExistsCollectionAndCreatedAsync(_settings.Value.Collections.Motorcycles);
         await VerifyIfNotExistsCollectionAndCreatedAsync(_settings.Value.Collections.DeliveryDrivers);
+        await VerifyIfNotExistsCollectionAndCreatedAsync(_settings.Value.Collections.MotorcycleRentals);
 
         await InitializeRentalPricesTable();
+
+        await CreateIndexes();
     }
 
     #region Private Methods
@@ -58,8 +61,25 @@ public class MongoDbContext: DBContext
 
         foreach (var item in _settings.Value.Collections.RentalPricesTable.Prices)
         {
-            await RentalPricesTable.InsertOneAsync(new RentalPriceTable() { Days = item.Days, Price = item.Price });
+            await RentalPricesTable.InsertOneAsync(new RentalPriceTable() { Days = item.Days, Price = item.Price, AssessmentPercent = item.AssessmentPercent });
         }
+    }
+
+    private CreateIndexModel<T> CreateModelIndexUnique<T>(IndexKeysDefinition<T> indexkey)
+    {
+        var indexOpts  = new CreateIndexOptions { Unique = true };
+        var modelIndex = new CreateIndexModel<T>(indexkey, indexOpts);
+
+        return modelIndex;
+    }
+
+
+    private async Task CreateIndexes()
+    {
+        await Motorcycles.Indexes.CreateOneAsync(CreateModelIndexUnique<Motorcycle>(Builders<Motorcycle>.IndexKeys.Ascending(x => x.Plate)));
+
+        await DeliveryDrivers.Indexes.CreateOneAsync(CreateModelIndexUnique<Deliveryman>(Builders<Deliveryman>.IndexKeys.Ascending(x => x.CNH)));
+        await DeliveryDrivers.Indexes.CreateOneAsync(CreateModelIndexUnique<Deliveryman>(Builders<Deliveryman>.IndexKeys.Ascending(x => x.CNPJ)));
     }
 
     #endregion Private Methods
@@ -70,6 +90,7 @@ public class MongoDbContext: DBContext
     public IMongoCollection<Motorcycle> Motorcycles => _database.GetCollection<Motorcycle>(_settings.Value.Collections.Motorcycles);
     public IMongoCollection<Deliveryman> DeliveryDrivers => _database.GetCollection<Deliveryman>(_settings.Value.Collections.DeliveryDrivers);
     public IMongoCollection<RentalPriceTable> RentalPricesTable => _database.GetCollection<RentalPriceTable>(_settings.Value.Collections.RentalPricesTable.Name);
+    public IMongoCollection<MotorcycleRental> MotorcycleRentals => _database.GetCollection<MotorcycleRental>(_settings.Value.Collections.MotorcycleRentals);
 
     #endregion Declare Colletions
 }

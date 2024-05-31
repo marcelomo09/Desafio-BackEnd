@@ -29,6 +29,9 @@ public class Motorcycle
     [StringLength(7, ErrorMessage = "Tamanho máximo de caracteres é 7")]
     public string Plate { get; set; }
 
+    [BsonElement("InUse")]
+    public int InUse { get; set; }
+
     public Motorcycle()
     {
         Year  = 0;
@@ -36,7 +39,7 @@ public class Motorcycle
         Plate = string.Empty;
     }
 
-    public Motorcycle(CreateMotorcycleParams param)
+    public Motorcycle(CreateMotorcycleRequest param)
     {
         Year  = param.Year;
         Model = param.Model;

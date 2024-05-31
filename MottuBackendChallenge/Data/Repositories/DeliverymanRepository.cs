@@ -34,4 +34,6 @@ public class DeliverymanRepository : IDeliverymanRepository
 
         await _context.DeliveryDrivers.ReplaceOneAsync(x => x.Id == deliveryman.Id, deliveryman);
     }
+
+    public async Task<Deliveryman> GetDeliverymanByCNH(string cnh) => await _context.DeliveryDrivers.Find(x => x.CNH == cnh).FirstOrDefaultAsync();
 }

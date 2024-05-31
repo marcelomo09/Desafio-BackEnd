@@ -15,4 +15,5 @@ public class RentalPricesTableRentalPricesTableSettingsValue
 {
     public int Days { get; set; }
     public float Price { get; set; }
+    public float AssessmentPercent { get; set; }
 }

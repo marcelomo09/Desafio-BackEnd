@@ -1,3 +1,5 @@
+using ZstdSharp.Unsafe;
+
 public class MotorcycleService
 {
     private readonly MotorcycleRepository _motorcycleRepository;
@@ -24,6 +26,8 @@ public class MotorcycleService
 
         if (moto == null) return new Response(true, "Moto não encontrada!", ResponseTypeResults.NotFound);
 
+        if (moto.InUse != 0) return new Response(true, "Moto não pode ser excluída, pois a mesma está alugada.", ResponseTypeResults.BadRequest);
+
         await _motorcycleRepository.DeleteMotorcycle(id);
 
         return new Response(false, "Moto excluída com sucesso!");
@@ -49,6 +53,8 @@ public class MotorcycleService
 
         if (plateExists) return new Response(true, "Placa já encontra-se cadastrada!", ResponseTypeResults.BadRequest);
 
+        if (await _motorcycleRepository.MotorcycleInUse(motorcycle.Id)) return new Response(true, "Dados da moto não podem ser alterados, pois a mesma está alugada.");
+
         await _motorcycleRepository.UpdateMotorcycle(motorcycle);
 
         return new Response(false, "Informações da moto atualizada com sucesso!");
@@ -56,7 +62,7 @@ public class MotorcycleService
 
     public async Task<Motorcycle> GetMotorcycleForPlate(string plate)
     {
-        return await _motorcycleRepository.GetMotorcycleForPlate(plate);
+        return await _motorcycleRepository.GetMotorcycleByPlate(plate);
     }
 
     private async Task<bool> PlateExists(string id, string plate)

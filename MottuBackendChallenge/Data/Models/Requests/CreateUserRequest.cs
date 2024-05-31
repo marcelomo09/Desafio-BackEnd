@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-public class CreateUserParams
+public class CreateUserRequest
 {
     [Required(ErrorMessage = "Nome não informado")]
     public string Name { get; set; }
@@ -11,7 +11,7 @@ public class CreateUserParams
     [Required(ErrorMessage = "Level não informado")]
     public string Level { get; set; }
 
-    public CreateUserParams()
+    public CreateUserRequest()
     {
         Name     = string.Empty;
         Password = string.Empty;

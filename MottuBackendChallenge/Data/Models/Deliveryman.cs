@@ -63,7 +63,7 @@ public class Deliveryman
         ImageCNHPath = string.Empty;
     }
 
-    public Deliveryman(CreateDeliveryman deliveryman, string imagepath)
+    public Deliveryman(CreateDeliverymanRequest deliveryman, string imagepath)
     {
         Name         = deliveryman.Name;
         CNPJ         = deliveryman.CNPJ;
@@ -73,7 +73,7 @@ public class Deliveryman
         ImageCNHPath = imagepath;
     }
 
-    public Deliveryman(UpdateDeliveryman deliveryman, string imagepath)
+    public Deliveryman(UpdateDeliverymanRequest deliveryman, string imagepath)
     {
         Id           = deliveryman.Id;
         Name         = deliveryman.Name;
