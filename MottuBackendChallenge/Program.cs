@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,8 @@ builder.Services.AddScoped<MotorcycleService>();
 builder.Services.AddScoped<DeliverymanRepository>();
 builder.Services.AddScoped<DeliverymanService>();
 
+builder.Services.AddScoped<RentalPriceTableRepository>();
+
 // Add Others Configurations
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -34,6 +37,14 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+
+// Inicialização do contexto do mongodb, com criação de collections se necessário e inserção de valores
+using (var sp = app.Services.CreateScope())
+{
+    var mongodbContext = sp.ServiceProvider.GetRequiredService<MongoDbContext>();
+
+    await mongodbContext.Initialized();
 }
 
 app.UseHttpsRedirection();
