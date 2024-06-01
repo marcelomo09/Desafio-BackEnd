@@ -17,6 +17,11 @@ public class MotorcycleRentalService
         _rentalPriceTableRepository = rentalpricetablerepository;
     }
 
+    /// <summary>
+    /// Faz a alocação da moto solicitada pelo entregador
+    /// </summary>
+    /// <param name="request">Dados requisitantes para realização da locação da moto</param>
+    /// <returns>Retorna um objeto com propriedades que identificam erros ou não</returns>
     public async Task<Response> CreateMotorcycleRental(CreateMotorcycleRentalRequest request)
     {
         // Validação de dados da Moto verificar se a mesma está disponivel
@@ -33,7 +38,7 @@ public class MotorcycleRentalService
 
         if (deliveryman.TypeCNH.ToUpper() != "A" && deliveryman.TypeCNH.ToUpper() != "A+B") return new Response(true, "Entregador não possuí uma carteira de motorista valida para a locação da moto.", ResponseTypeResults.BadRequest);
 
-        // Verifica qual plano foi selecionado
+        // Verifica qual plano foi selecionado e calcula o valor total ao final
         var plan = await _rentalPriceTableRepository.GetRentalPriceTableForDay(request.PlanOfLocation);
 
         if (plan == null)
@@ -59,6 +64,11 @@ public class MotorcycleRentalService
         return new Response(false, $"Locação da Moto {motoDisponible.Model} realizada com sucesso!");
     }
 
+    /// <summary>
+    /// Exclui o registro de locação da moto
+    /// </summary>
+    /// <param name="id">Número de identificação da locação</param>
+    /// <returns>Retorna um objeto com propriedades que identificam erros ou não</returns>
     public async Task<Response> DeleteMotorcycleRental(string id)
     {
         var rental = await _motorcycleRentalRepository.GetMotorcycleRental(id);
@@ -72,26 +82,45 @@ public class MotorcycleRentalService
 
         await _motorcycleRepository.UpdateMotorcycle(moto);
 
+        // Excluí o registro de locação
         await _motorcycleRentalRepository.DeleteMotorcycleRental(id);
 
         return new Response(false, $"Locação da moto {moto.Model} placa {moto.Plate} foi removida com sucesso.");
     }
 
+    /// <summary>
+    /// Busca uma locação especifica pelo seu número de identificação
+    /// </summary>
+    /// <param name="id">Número de identificação da locação</param>
+    /// <returns>Objeto contendo todas as informações da locação da moto</returns>
     public async Task<MotorcycleRental> GetMotorcycleRental(string id)
     {
         return await _motorcycleRentalRepository.GetMotorcycleRental(id);
     }
 
+    /// <summary>
+    /// Busca uma lista de todas as locações existentes
+    /// </summary>
+    /// <returns>Objeto List com todos os registros cadastrados e suas informações</returns>
     public async Task<List<MotorcycleRental>> GetMotorcycleRentals()
     {
         return await _motorcycleRentalRepository.GetMotorcycleRentals();
     }
 
+    /// <summary>
+    /// Atualiza as informações da locação da moto
+    /// </summary>
+    /// <param name="entity">Daodos de atualização da locação</param>
     public async Task UpdateMotorcycleRental(MotorcycleRental entity)
     {
         await _motorcycleRentalRepository.UpdateMotorcycleRental(entity);
     }
 
+    /// <summary>
+    /// Realiza uma consulta de quanto custará ao entregador a locação da moto
+    /// </summary>
+    /// <param name="request">Dados requerintes para realização da consulta</param>
+    /// <returns>Retorna um objeto com propriedades que identificam erros ou não</returns>
     public async Task<Response> ConsultValueForMotorcycleRental(ConsultValueForMotorcycleRentalRequest request)
     {
         var plan = await _rentalPriceTableRepository.GetRentalPriceTableForDay(request.PlanOfDays);
@@ -108,6 +137,13 @@ public class MotorcycleRentalService
         return new Response(false, $"O total a ser pago é {total.ToString("C", CultureInfo.GetCultureInfo("pt-BR"))}");
     }
 
+    /// <summary>
+    /// Calcula quanto custará ao entregador a locação
+    /// </summary>
+    /// <param name="plan">Plano selecionado pelo entregador</param>
+    /// <param name="start">Data de inicio da locação</param>
+    /// <param name="end">Data que o entregador pretendde devolver a moto</param>
+    /// <returns>Retorna o valor total que será pago pela locação</returns>
     private float CalcMotorcycleRental(RentalPriceTable plan, string start, string end)
     {
         DateTime startDate    = DateTime.Parse(start);

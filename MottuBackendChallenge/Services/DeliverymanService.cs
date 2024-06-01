@@ -10,15 +10,26 @@ public class DeliverymanService
 
     #region Private Methods
 
-    private async Task<Response> CNPJExists(Deliveryman deliveryman)
+    /// <summary>
+    /// Verifica se algum entregador possui o CNPJ informado e que sejá diferente da identificação inserida
+    /// </summary>
+    /// <param name="cnpj">CNPJ do entregador</param>
+    /// <param name="id">Número de identificação do entregador</param>
+    /// <returns>Retorna um objeto com propriedades que identificam erros ou não</returns>
+    private async Task<Response> CNPJExists(string cnpj, string? id)
     {
-        bool cnpjExists = await _deliverymanRepository.CNPJExists(deliveryman.Id, deliveryman.CNPJ);
+        bool cnpjExists = await _deliverymanRepository.CNPJExists(id, cnpj);
 
         if (cnpjExists) return new Response(true, "CNPJ já encontra-se cadastrado.", ResponseTypeResults.BadRequest);
 
         return new Response(false, "");
     }
 
+    /// <summary>
+    /// Verifica se o entregador existe
+    /// </summary>
+    /// <param name="id">Número de identificação do entregador</param>
+    /// <returns>Retorna um objeto com propriedades que identificam erros ou não</returns>
     private async Task<Response> DeliverymanNotExists(string id)
     {
         var exists = await _deliverymanRepository.GetDeliveryman(id);
@@ -28,9 +39,15 @@ public class DeliverymanService
         return new Response(false, "");
     }
 
-    private async Task<Response> CNHExists(Deliveryman deliveryman)
+    /// <summary>
+    /// Verifica se algum entregador possui a CNH informada e que sejá diferente da identificação inserida
+    /// </summary>
+    /// <param name="cnh">Número da CNH do entregador</param>
+    /// <param name="id">Número de identificação do entregador</param>
+    /// <returns>Retorna um objeto com propriedades que identificam erros ou não</returns>
+    private async Task<Response> CNHExists(string cnh, string? id)
     {
-        bool cnhExists = await _deliverymanRepository.CNHExists(deliveryman.Id, deliveryman.CNH);
+        bool cnhExists = await _deliverymanRepository.CNHExists(id, cnh);
 
         if (cnhExists) return new Response(true, "CNH já encontra-se cadastrada.", ResponseTypeResults.BadRequest); 
 
@@ -41,13 +58,18 @@ public class DeliverymanService
 
     #region Public Methods
 
+    /// <summary>
+    /// Cria na base de dados o registro do Entregador
+    /// </summary>
+    /// <param name="deliveryman">Objeto contendo todos os dados necessários para o cadastro do entregador</param>
+    /// <returns>Retorna um objeto com propriedades que identificam erros ou não</returns>
     public async Task<Response> CreateDeliveryman(Deliveryman deliveryman)
     {
-        Response response = await CNPJExists(deliveryman);
+        Response response = await CNPJExists(deliveryman.CNPJ, deliveryman.Id);
 
         if (response.Error) return response;
 
-        response = await CNHExists(deliveryman);
+        response = await CNHExists(deliveryman.CNH, deliveryman.Id);
 
         if (response.Error) return response;
 
@@ -56,6 +78,11 @@ public class DeliverymanService
         return new Response(false, "Entregador cadastrado com sucesso!");
     }
 
+    /// <summary>
+    /// Excluí o registro do entregador
+    /// </summary>
+    /// <param name="id">Número de identificação do entregador</param>
+    /// <returns>Retorna um objeto com propriedades que identificam erros ou não</returns>
     public async Task<Response> DeleteDeliveryman(string id)
     {
         Response response = await DeliverymanNotExists(id);
@@ -69,19 +96,33 @@ public class DeliverymanService
         return response;
     }
 
+    /// <summary>
+    /// Retorna a lista de todos os entregadores cadastrados
+    /// </summary>
+    /// <returns>Lista dos entregadores cadastrados</returns>
     public async Task<List<Deliveryman>> GetDeliveryDrivers()
     {
         return await _deliverymanRepository.GetDeliveryDrivers();
     }
 
+    /// <summary>
+    /// Busca um entregador especifico pela sua identificação
+    /// </summary>
+    /// <param name="id">Número de identificação do entregador</param>
+    /// <returns>Retorna o objeto com todos os dados do entregador encontrado</returns>
     public async Task<Deliveryman> GetDeliveryman(string id)
     {
         return await _deliverymanRepository.GetDeliveryman(id);
     }
 
+    /// <summary>
+    /// Realiza a atualização de dados do entregador
+    /// </summary>
+    /// <param name="deliveryman">Dados de atualização do entregador</param>
+    /// <returns>Retorna um objeto com propriedades que identificam erros ou não</returns>
     public async Task<Response> UpdateDeliveryman(Deliveryman deliveryman)
     {
-        Response response = await CNPJExists(deliveryman);
+        Response response = await CNPJExists(deliveryman.CNPJ, deliveryman.Id);
 
         if (response.Error) return response;
 
@@ -89,7 +130,7 @@ public class DeliverymanService
 
         if (response.Error) return response;
 
-        response = await CNHExists(deliveryman);
+        response = await CNHExists(deliveryman.CNH, deliveryman.Id);
 
         if (response.Error) return response;
 
@@ -108,6 +149,12 @@ public class DeliverymanService
         return response;
     }
 
+    /// <summary>
+    /// Realiza a atualização da foto de CNH do entregador
+    /// </summary>
+    /// <param name="id">Número de identificação do entregador</param>
+    /// <param name="imagecnhpath">Caminho ao qual a foto foi armazenada</param>
+    /// <returns>Retorna um objeto com propriedades que identificam erros ou não</returns>
     public async Task<Response> UpdateImageCNHPath(string id, string imagecnhpath)
     {
         var deliveryman = await _deliverymanRepository.GetDeliveryman(id);
