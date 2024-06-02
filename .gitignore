@@ -1,2 +1,3 @@
 # Ignorar a pasta bin e seu conteúdo
 **/bin/
+**/obj/
