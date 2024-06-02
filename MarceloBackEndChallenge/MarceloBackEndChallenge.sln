@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarceloBackEndChallenge", "MarceloBackEndChallenge.csproj", "{934CE2B9-903C-43BD-8BC9-41FB11F6769D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{934CE2B9-903C-43BD-8BC9-41FB11F6769D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{934CE2B9-903C-43BD-8BC9-41FB11F6769D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{934CE2B9-903C-43BD-8BC9-41FB11F6769D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{934CE2B9-903C-43BD-8BC9-41FB11F6769D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3A8A00B5-0C2A-43D0-A402-FB081F491394}
+	EndGlobalSection
+EndGlobal

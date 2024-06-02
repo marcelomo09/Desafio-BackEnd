@@ -1,0 +1,43 @@
+using System.ComponentModel.DataAnnotations;
+
+public class CreateDeliverymanRequest
+{
+    [Required(ErrorMessage = "Nome do entregador não informado")]
+    [MaxLength(50)]
+    [StringLength(50, ErrorMessage = "Tamanho máximo de caracteres é 50")]
+    public string Name { get; set; }
+
+    [Required(ErrorMessage = "CNPJ do entregador não informado")]
+    [RegularExpression(@"\d{14}", ErrorMessage = "O CNPJ deve ter exatamente 14 dígitos, favor digitar apenas os números")]
+    public string CNPJ { get; set; }
+
+    [Required(ErrorMessage = "Data de nascimento não informada")]
+    [ValidDate("dd/MM/yyyy", ErrorMessage = "A data deve estar no formato dd/MM/yyyy.")]
+    public string DateOfBirth { get; set; }
+
+    [Required(ErrorMessage = "CNH não informada")]
+    [RegularExpression(@"\d{11}", ErrorMessage = "O tamanho da CNH são de 9 caracteres, favor digitar apenas os números")]
+    public string CNH { get; set; }
+
+    [Required(ErrorMessage = "Tipo da CNH não informada")]
+    [StringLength(3, ErrorMessage = "O máximo de caracteres para o Tipo de CNH são 3")]
+    [ValidateTypeCNH]
+    public string TypeCNH { get; set; }
+
+    [Required(ErrorMessage = "Foto não enviada")]
+    public IFormFile? ImageCNH { get; set; }
+
+    [Required(ErrorMessage = "Celular não informado")]
+    [RegularExpression(@"\d{11}", ErrorMessage = "Favor informar apenas os números do celular com DDD")]
+    public string PhoneNumber { get; set; }
+
+    public CreateDeliverymanRequest()
+    {
+        Name         = string.Empty;
+        CNPJ         = string.Empty;
+        CNH          = string.Empty;
+        DateOfBirth  = string.Empty;
+        TypeCNH      = string.Empty;
+        PhoneNumber  = string.Empty;
+    }
+}
