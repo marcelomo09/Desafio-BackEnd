@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MarceloBackEndChallenge")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+15bbdc5ef1420aacd18399b15c5f4271d185b93f")]
 [assembly: System.Reflection.AssemblyProductAttribute("MarceloBackEndChallenge")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MarceloBackEndChallenge")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

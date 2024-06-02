@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "v65PNwQ3Qj8=",
+  "dgSpecHash": "5or3ao3iPtA=",
   "success": true,
-  "projectFilePath": "C:\\Mottu\\Desafio-BackEnd-2\\MarceloBackEndChallenge\\MarceloBackEndChallenge.csproj",
+  "projectFilePath": "C:\\Mottu\\Desafio-BackEnd\\MarceloBackEndChallenge\\MarceloBackEndChallenge.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Marcelo\\.nuget\\packages\\awssdk.core\\3.7.100.14\\awssdk.core.3.7.100.14.nupkg.sha512",
     "C:\\Users\\Marcelo\\.nuget\\packages\\awssdk.securitytoken\\3.7.100.14\\awssdk.securitytoken.3.7.100.14.nupkg.sha512",

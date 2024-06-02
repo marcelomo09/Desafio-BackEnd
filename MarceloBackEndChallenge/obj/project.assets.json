@@ -2021,11 +2021,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Mottu\\Desafio-BackEnd-2\\MarceloBackEndChallenge\\MarceloBackEndChallenge.csproj",
+      "projectUniqueName": "C:\\Mottu\\Desafio-BackEnd\\MarceloBackEndChallenge\\MarceloBackEndChallenge.csproj",
       "projectName": "MarceloBackEndChallenge",
-      "projectPath": "C:\\Mottu\\Desafio-BackEnd-2\\MarceloBackEndChallenge\\MarceloBackEndChallenge.csproj",
+      "projectPath": "C:\\Mottu\\Desafio-BackEnd\\MarceloBackEndChallenge\\MarceloBackEndChallenge.csproj",
       "packagesPath": "C:\\Users\\Marcelo\\.nuget\\packages\\",
-      "outputPath": "C:\\Mottu\\Desafio-BackEnd-2\\MarceloBackEndChallenge\\obj\\",
+      "outputPath": "C:\\Mottu\\Desafio-BackEnd\\MarceloBackEndChallenge\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
