@@ -1,8 +1,11 @@
+using System.Text.Json.Serialization;
+
 public class Response
 {
     public bool Error { get; set; }
     public string Message { get; set; }
 
+    [JsonIgnore]
     public ResponseTypeResults Result { get; set; }
 
     public Response()

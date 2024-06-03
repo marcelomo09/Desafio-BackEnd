@@ -16,7 +16,7 @@ public class ValidateSituationsRequestRaceAttribute : ValidationAttribute
 
         var situations = new [] { mongoSettings.Collections.RequestRides.Situations.Disponible, 
                                   mongoSettings.Collections.RequestRides.Situations.Accept, 
-                                  mongoSettings.Collections.RequestRides.Situations.Deliivered };
+                                  mongoSettings.Collections.RequestRides.Situations.Deliver };
 
         if (value != null && !Array.Exists(situations, e => e == value.ToString()))
         {

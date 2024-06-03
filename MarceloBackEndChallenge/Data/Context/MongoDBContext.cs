@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using MongoDB.EntityFrameworkCore;
 
 public class MongoDBContext : DbContext
 {
@@ -8,6 +9,7 @@ public class MongoDBContext : DbContext
     public DbSet<Deliveryman> DeliveryDrivers { get; set; }
     public DbSet<MotorcycleRental> MotorcycleRentals { get; set; }
     public DbSet<RequestRace> RequestRides { get; set; }
+    public DbSet<User> Users { get; set; }
 
     private readonly IOptions<MongoSettings> _settings;
 
@@ -36,5 +38,7 @@ public class MongoDBContext : DbContext
         modelBuilder.Entity<Deliveryman>().HasIndex(m => m.CNH).IsUnique();
 
         modelBuilder.Entity<Deliveryman>().HasIndex(m => m.CNPJ).IsUnique();
+
+        modelBuilder.Entity<User>().HasIndex(m => m.UserName).IsUnique();
     }
 }

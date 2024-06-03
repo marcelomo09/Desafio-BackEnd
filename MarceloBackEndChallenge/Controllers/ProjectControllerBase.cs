@@ -6,9 +6,9 @@ public class ProjectControllerBase: ControllerBase
     {
         switch (response.Result)
         {
-            case ResponseTypeResults.NotFound  : return NotFound(response.Message);
-            case ResponseTypeResults.BadRequest: return BadRequest(response.Message);
-            default                            : return Ok(response.Message);
+            case ResponseTypeResults.NotFound  : return NotFound(response);
+            case ResponseTypeResults.BadRequest: return BadRequest(response);
+            default                            : return Ok(response);
         }
     }
 }

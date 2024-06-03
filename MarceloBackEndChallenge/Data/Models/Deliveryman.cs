@@ -13,7 +13,7 @@ public class Deliveryman
     [JsonIgnore]
     public ObjectId Id { get; set; }
 
-    public string IdDeliveryman { get { return Id.ToString(); } }
+    public string IdDeliveryman { get => Id.ToString(); }
 
     [BsonElement("Name")]
     [Required(ErrorMessage = "Nome do entregador não informado")]
@@ -69,7 +69,7 @@ public class Deliveryman
     {
         Name         = string.Empty;
         CNPJ         = string.Empty;
-        DateOfBirth  = new Date();
+        DateOfBirth  = new Date(DateTime.UtcNow);
         CNH          = string.Empty;
         TypeCNH      = string.Empty;
         ImageCNHPath = string.Empty;

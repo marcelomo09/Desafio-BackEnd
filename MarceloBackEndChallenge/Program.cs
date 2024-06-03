@@ -12,6 +12,8 @@ builder.Services.AddDbContext<MongoDBContext>();
 builder.Services.AddScoped<MotorcycleService>();
 builder.Services.AddScoped<DeliverymanService>();
 builder.Services.AddScoped<MotorcycleRentalService>();
+builder.Services.AddScoped<RequestRaceService>();
+builder.Services.AddScoped<UserService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -32,5 +34,20 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var serviceProvider = scope.ServiceProvider;
+    var context         = serviceProvider.GetRequiredService<MongoDBContext>();
+
+    if (!context.Users.Any(u => u.UserName == "admin"))
+    {
+        var user = new User() { UserName = "admin", Password = builder.Configuration.GetSection("Admin").Value ?? "" };
+
+        context.Users.Add(user);
+
+        await context.SaveChangesAsync();
+    }
+}
 
 app.Run();

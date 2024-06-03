@@ -12,7 +12,7 @@ public class Motorcycle
     [JsonIgnore]
     public ObjectId Id { get; set; }
 
-    public string IdMotorcycle { get { return Id.ToString(); } }
+    public string IdMotorcycle { get => Id.ToString(); }
 
     [BsonElement("Year")]
     [Required(ErrorMessage = "Ano da moto não informada")]

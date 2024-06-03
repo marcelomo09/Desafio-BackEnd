@@ -17,12 +17,12 @@ public class SituationRequestRidesSettings
 
     public string Accept { get; set; }
 
-    public string Deliivered { get; set; }
+    public string Deliver { get; set; }
 
     public SituationRequestRidesSettings()
     {
         Disponible = string.Empty;
         Accept     = string.Empty;
-        Deliivered = string.Empty;
+        Deliver    = string.Empty;
     }
 }

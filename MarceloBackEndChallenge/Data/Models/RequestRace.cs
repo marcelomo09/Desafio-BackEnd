@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Entities;
@@ -9,25 +10,13 @@ public class RequestRace
     [BsonRepresentation(BsonType.ObjectId)]
     [Required]
     [BsonRequired]
+    [JsonIgnore]
     public ObjectId Id { get; set; }
 
-    public string IdRequestRace { get { return Id.ToString(); } }
-
-    [BsonElement("IdDeliveryman")]
-    public string? IdDeliveryman { get; set;}
+    public string IdRequestRace { get => Id.ToString();  }
 
     [BsonElement("IdMotorcycleRental")]
     public string? IdMotorcycleRental { get; set; }
-
-    [BsonElement("RequestNum")]
-    [Required(ErrorMessage = "Favor inserir o número do pedido")]
-    [BsonRequired]
-    public string RequestNum { get; set;}
-
-    [BsonElement("Description")]
-    [Required(ErrorMessage = "Favor dar detalhes sobre o pedido")]
-    [BsonRequired]
-    public string Description { get; set;}
 
     [BsonElement("CreateDate")]
     [Required(ErrorMessage = "Data de criação não informada")]
@@ -35,10 +24,10 @@ public class RequestRace
     [DataType(DataType.Date, ErrorMessage = "Formato de data inválido")]
     public Date CreateDate { get; set; }
 
-    [BsonElement("RaceValue")]
+    [BsonElement("RequestRaceValue")]
     [BsonRequired]
     [Required]
-    public float RaceValue { get; set; }
+    public float RequestRaceValue { get; set; }
 
     [BsonElement("Situation")]
     [Required(ErrorMessage = "Situation não informada")]
@@ -48,10 +37,8 @@ public class RequestRace
 
     public RequestRace()
     {
-        RequestNum  = string.Empty;
-        Description = string.Empty;
-        CreateDate  = new Date();
-        Situation   = string.Empty;
+        CreateDate = new Date();
+        Situation  = string.Empty;
     }
 
     /// <summary>
@@ -62,10 +49,8 @@ public class RequestRace
     /// <param name="request">Dados de requisição para criação do pedido de corrida</param>
     public RequestRace(string situation, CreateRequestReceRequest request)
     {
-        RequestNum  = request.RequestNum;
-        Description = request.Description;
-        CreateDate  = new Date();
-        RaceValue   = request.RaceValue;
-        Situation   = situation;
+        CreateDate       = new Date(DateTime.UtcNow);
+        RequestRaceValue = request.RequestRaceValue;
+        Situation        = situation;
     }
 }

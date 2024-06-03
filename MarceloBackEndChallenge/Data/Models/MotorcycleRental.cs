@@ -13,7 +13,7 @@ public class MotorcycleRental
     [JsonIgnore]
     public ObjectId Id { get; set; }
 
-    public string IdMotorcycleRental { get { return Id.ToString(); } }
+    public string IdMotorcycleRental { get => Id.ToString(); }
 
     [BsonElement("IdDeliveryman")]
     [BsonRequired]
