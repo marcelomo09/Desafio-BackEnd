@@ -40,6 +40,7 @@ public class UserService : ServiceBase
             return new Response(true, $"Ocorreu uma exeção no processo de criação do usuário: {ex.Message}", ResponseTypeResults.BadRequest);
         }
     }
+    
     /// <summary>
     /// Excluí um usuário desde que não seja o admin
     /// </summary>

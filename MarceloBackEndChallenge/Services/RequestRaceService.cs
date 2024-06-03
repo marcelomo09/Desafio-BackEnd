@@ -25,6 +25,12 @@ public class RequestRaceService : ServiceBase
 
     #region Private Methods
 
+    /// <summary>
+    /// Monta fila da lista de notificações para os entregadores no RabbitMQ
+    /// </summary>
+    /// <param name="idRequestRace">Identificação do pedido da corrida</param>
+    /// <param name="deliveryDrivers">Dados dos entregadores</param>
+    /// <returns>Retorna uma resposta do processo de inclusão das notificações em uma fila</returns>
     private Response PublishMessagesForNotifications(string idRequestRace, List<Deliveryman> deliveryDrivers)
     {
         try
@@ -59,6 +65,11 @@ public class RequestRaceService : ServiceBase
         }
     }
 
+    /// <summary>
+    /// Realiza a chamada da montagem da fila de notificações passando os entregadores validos a receberm a notificação
+    /// </summary>
+    /// <param name="idRequestRace">Identificação do pedido da corrida</param>
+    /// <returns>Retorna uma resposta do processo de montagem de dados para chamada a inclusão de fila para notificação</returns>
     private async Task<Response> PublishDeliveryDriversForNotification(string idRequestRace)
     {
         try
@@ -90,6 +101,11 @@ public class RequestRaceService : ServiceBase
 
     #region  Public Methods
 
+    /// <summary>
+    /// Cria um pedido de corrida
+    /// </summary>
+    /// <param name="request">Dados para criar o pedido de corrida</param>
+    /// <returns>Retorna uma resposta do processo de criação do pedido de corrida</returns>
     public async Task<Response> Create(CreateRequestReceRequest request)
     {        
         try
@@ -115,7 +131,13 @@ public class RequestRaceService : ServiceBase
             return new Response(true, $"Ocorreu uma exceção na criação do pedido: {ex.Message}", ResponseTypeResults.BadRequest);
         }   
     }
-    
+
+    /// <summary>
+    /// Altrera o pedido de corrida para aceito ligando ao entregador que solicitou
+    /// </summary>
+    /// <param name="idRequestRace">Identificaçção da corrida de pedido</param>
+    /// <param name="cnh">CNH do entregador</param>
+    /// <returns>Retorna uma resposta do processo de alteração de status da corrida para aceito</returns>    
     public async Task<Response> Accept(string idRequestRace, string cnh)
     {
         try
@@ -150,6 +172,12 @@ public class RequestRaceService : ServiceBase
         }
     }
 
+    /// <summary>
+    /// Altrera o pedido de corrida para entregue
+    /// </summary>
+    /// <param name="idRequestRace">Identificaçção da corrida de pedido</param>
+    /// <param name="cnh">CNH do entregador</param>
+    /// <returns>Retorna uma resposta do processo de alteração de status da corrida para entregue</returns>    
     public async Task<Response> Deliver(string idRequestRace, string cnh)
     {
         try

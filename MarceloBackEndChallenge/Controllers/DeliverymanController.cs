@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+[Authorize(Roles = "entregador")]
 [ApiController]
 [Route("api/[controller]")]
 public class DeliverymanController: ProjectControllerBase

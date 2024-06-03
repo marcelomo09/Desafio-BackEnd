@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+[Authorize(Roles = "admin")]
 [ApiController]
 [Route("api/[controller]")]
 public class UserController: ProjectControllerBase
@@ -13,8 +15,8 @@ public class UserController: ProjectControllerBase
 
     [HttpGet("GetAllUsers")]
     public async Task<ActionResult> GetAllUsers()
-    {
-        var response = await _userService.GetAll();
+    {   
+        var  response = await _userService.GetAll();
 
         return Ok(response);
     }
