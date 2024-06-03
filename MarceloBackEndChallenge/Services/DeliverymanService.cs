@@ -3,9 +3,12 @@ using MongoDB.Entities;
 
 public class DeliverymanService: ServiceBase
 {
-    public DeliverymanService(MongoDBContext mongoDBContext) : base(mongoDBContext)
+
+    private readonly IConfiguration _configuration;
+
+    public DeliverymanService(IConfiguration configuration, MongoDBContext mongoDBContext) : base(mongoDBContext)
     {
-        
+        _configuration = configuration;
     }
 
 
@@ -24,7 +27,7 @@ public class DeliverymanService: ServiceBase
 
             if (file.ContentType != "image/png" && file.ContentType != "image/bmp") return new Response(true, "Foto da CNH deve ser em PNG ou BMP!", ResponseTypeResults.BadRequest);
 
-            string filepath = Path.Combine(Directory.GetCurrentDirectory(), "UploadsCNH", file.FileName);
+            string filepath = Path.Combine(Directory.GetCurrentDirectory(), _configuration.GetSection("UploadsCNHFolder").Value ?? "UploadsCNH", file.FileName);
 
             if (File.Exists(filepath))
             {
