@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-[Authorize(Roles = "admin")]
 [ApiController]
 [Route("api/[controller]")]
 public class RequestRaceController : ProjectControllerBase
@@ -28,6 +27,16 @@ public class RequestRaceController : ProjectControllerBase
         }
     }
 
+    [Authorize(Roles = "admin")]
+    [HttpGet("GetAllNotificattionsDeliveryDrivers")]
+    public async Task<ActionResult> GetAllNotificattionsDeliveryDrivers()
+    {
+        var response = await _requestRaceService.GetAllNotificattionsDeliveryDrivers();
+
+        return Ok(response);
+    }
+
+    [Authorize(Roles = "admin")]
     [HttpPost("CreateRequestRace")]
     public async Task<ActionResult> CreateRequestRace([FromForm] CreateRequestReceRequest request)
     {
@@ -36,6 +45,7 @@ public class RequestRaceController : ProjectControllerBase
         return SendResponseMessage(response);
     }
 
+    [Authorize(Roles = "entregador")]
     [HttpPut("AcceptRequestRace")]
     public async Task<ActionResult> AcceptRequestRace(string idRequestRace, string cnh)
     {
@@ -44,6 +54,7 @@ public class RequestRaceController : ProjectControllerBase
         return SendResponseMessage(response);
     }
 
+    [Authorize(Roles = "entregador")]
     [HttpPut("DeliverRequestRace")]
     public async Task<ActionResult> DeliverRequestRace(string idRequestRace, string cnh)
     {

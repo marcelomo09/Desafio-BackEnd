@@ -11,6 +11,7 @@ public class Deliveryman
     [Required]
     [BsonRequired]
     [JsonIgnore]
+    [JsonConverter(typeof(ObjectIdConverter))]
     public ObjectId Id { get; set; }
 
     public string IdDeliveryman { get => Id.ToString(); }
@@ -56,14 +57,6 @@ public class Deliveryman
     [Required(ErrorMessage = "Foto não enviada")]
     [BsonRequired]
     public string ImageCNHPath { get; set; }
-
-    [BsonElement("PhoneNumber")]
-    [Required(ErrorMessage = "Celular não informado")]
-    [BsonRequired]
-    [MaxLength(11)]
-    [MinLength(11)]
-    [RegularExpression(@"\d{11}", ErrorMessage = "Favor informar apenas os números do celular com DDD")]
-    public string PhoneNumber { get; set; }
     
     public Deliveryman()
     {
@@ -73,7 +66,6 @@ public class Deliveryman
         CNH          = string.Empty;
         TypeCNH      = string.Empty;
         ImageCNHPath = string.Empty;
-        PhoneNumber  = string.Empty;
     }
 
     public Deliveryman(string imageCNHPath, CreateDeliverymanRequest request)
@@ -84,6 +76,5 @@ public class Deliveryman
         CNH          = request.CNH;
         TypeCNH      = request.TypeCNH;
         ImageCNHPath = imageCNHPath;
-        PhoneNumber  = request.PhoneNumber;
     }
 }

@@ -27,10 +27,6 @@ public class CreateDeliverymanRequest
     [Required(ErrorMessage = "Foto não enviada")]
     public IFormFile? ImageCNH { get; set; }
 
-    [Required(ErrorMessage = "Celular não informado")]
-    [RegularExpression(@"\d{11}", ErrorMessage = "Favor informar apenas os números do celular com DDD")]
-    public string PhoneNumber { get; set; }
-
     public CreateDeliverymanRequest()
     {
         Name         = string.Empty;
@@ -38,6 +34,5 @@ public class CreateDeliverymanRequest
         CNH          = string.Empty;
         DateOfBirth  = string.Empty;
         TypeCNH      = string.Empty;
-        PhoneNumber  = string.Empty;
     }
 }

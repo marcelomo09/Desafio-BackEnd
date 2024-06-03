@@ -10,6 +10,7 @@ public class MongoDBContext : DbContext
     public DbSet<MotorcycleRental> MotorcycleRentals { get; set; }
     public DbSet<RequestRace> RequestRides { get; set; }
     public DbSet<User> Users { get; set; }
+    public DbSet<NotificationsRequestDeliveryRiders> NotificationsRequestDeliveryRiders { get; set; }
 
     private readonly IOptions<MongoSettings> _settings;
 

@@ -49,6 +49,7 @@ public class RequestRace
     /// <param name="request">Dados de requisição para criação do pedido de corrida</param>
     public RequestRace(string situation, CreateRequestReceRequest request)
     {
+        Id               = ObjectId.GenerateNewId();
         CreateDate       = new Date(DateTime.UtcNow);
         RequestRaceValue = request.RequestRaceValue;
         Situation        = situation;

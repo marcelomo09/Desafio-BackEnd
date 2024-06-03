@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using MongoDB.Bson.IO;
 using MongoDB.Driver;
 using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
 
 public class RequestRaceService : ServiceBase
 {
@@ -30,8 +31,8 @@ public class RequestRaceService : ServiceBase
     /// </summary>
     /// <param name="idRequestRace">Identificação do pedido da corrida</param>
     /// <param name="deliveryDrivers">Dados dos entregadores</param>
-    /// <returns>Retorna uma resposta do processo de inclusão das notificações em uma fila</returns>
-    private Response PublishMessagesForNotifications(string idRequestRace, List<Deliveryman> deliveryDrivers)
+    /// <returns>Retorna uma resposta do processo de inclusão das notificações em uma fila com o nome da Queue</returns>
+    private Response PublishMessagesForNotifications(string idRequestRace, float requestRaceValue, List<Deliveryman> deliveryDrivers)
     {
         try
         {
@@ -43,7 +44,7 @@ public class RequestRaceService : ServiceBase
             {
                 using (var channel = connection.CreateModel())
                 {
-                    var notification = new NotificationsDeliveryRiders(idRequestRace, deliveryDrivers);
+                    var notification = new NotificationsDeliveryRiders(idRequestRace, requestRaceValue, deliveryDrivers);
 
                     channel.QueueDeclare(queue: notification.Queue, durable: false, exclusive: false, autoDelete: false, arguments: null);
 
@@ -70,7 +71,7 @@ public class RequestRaceService : ServiceBase
     /// </summary>
     /// <param name="idRequestRace">Identificação do pedido da corrida</param>
     /// <returns>Retorna uma resposta do processo de montagem de dados para chamada a inclusão de fila para notificação</returns>
-    private async Task<Response> PublishDeliveryDriversForNotification(string idRequestRace)
+    private async Task<Response> PublishDeliveryDriversForNotification(string idRequestRace, float requestRaceValue)
     {
         try
         {
@@ -87,7 +88,7 @@ public class RequestRaceService : ServiceBase
             var deliveryDrivers = await _dbContext.DeliveryDrivers.Where(d => rentalsNotInRequests.Any(r => r.IdDeliveryman == d.Id.ToString())).ToListAsync();
 
             // Publica no RabbitMQ as mensagens a serem enviadas para os entregadores
-            var response = PublishMessagesForNotifications(idRequestRace, deliveryDrivers);
+            var response = PublishMessagesForNotifications(idRequestRace, requestRaceValue, deliveryDrivers);
 
             return response;
         }
@@ -117,14 +118,13 @@ public class RequestRaceService : ServiceBase
 
             await _dbContext.SaveChangesAsync();
 
-            // TODO: Realizar a correção e ajustar a rotina de notificações
-            // var response = await PublishDeliveryDriversForNotification(requestRace.IdRequestRace);
+            var response = await PublishDeliveryDriversForNotification(requestRace.IdRequestRace, request.RequestRaceValue);
 
-            // if (response.Error) response.Message = $"O pedido foi registrado com sucesso! Porem ocorreram problemas na montagem de notificações: {response.Message}";
+            if (response.Error) response.Message = $"O pedido foi registrado com sucesso! Porem ocorreram problemas na montagem de notificações: {response.Message}";
 
-            // return response.Error ? response : new Response(false, "Pedido registrado com sucesso!");
-
-            return new Response(false, "Pedido registrado com sucesso!");
+            // response = ConsumeMessagesFromQueue();
+            
+            return response.Error ? response : new Response(false, "Pedido registrado com sucesso!");
         }
         catch (Exception ex)
         {
@@ -211,6 +211,15 @@ public class RequestRaceService : ServiceBase
         {
             return new Response(true, $"Ocorreu uma exceção durante a entrega do pedido: {ex.Message}", ResponseTypeResults.BadRequest);
         }
+    }
+
+    /// <summary>
+    /// Busca todos os entregadores que receberam uma notificação
+    /// </summary>
+    /// <returns>Retorna uma lista de todos os entregadores que receberam uma notificação</returns>    
+    public async Task<List<NotificationsRequestDeliveryRiders>> GetAllNotificattionsDeliveryDrivers()
+    {
+        return await _dbContext.NotificationsRequestDeliveryRiders.ToListAsync();
     }
 
     #endregion Public Methods

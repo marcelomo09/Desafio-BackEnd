@@ -12,6 +12,8 @@ public class MongoCollections
 
     public RequestRidesSettings RequestRides { get; set; }
 
+    public string NotificationsRequestDeliveryRiders { get; set; }
+
     public MongoCollections()
     {
         Motorcycles        = string.Empty;
@@ -20,5 +22,7 @@ public class MongoCollections
         Users              = new UserSettings();
         RentalsPricesTable = new RentalPricesTableSettings();
         RequestRides       = new RequestRidesSettings();
+        
+        NotificationsRequestDeliveryRiders = string.Empty;
     }
 }
