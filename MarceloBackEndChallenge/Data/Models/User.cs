@@ -34,11 +34,17 @@ public class User
     [BsonElement("CreateDate")]
     public Date CreateDate { get; set; }
 
+    [Required]
+    [BsonRequired]
+    [BsonElement("UserGroup")]
+    public string UserGroup { get; set; }
+
     public User()
     {
         UserName   = string.Empty;
         Password   = string.Empty;
         CreateDate = new Date(DateTime.UtcNow);
+        UserGroup  = string.Empty;
     }
 
     public User(CreateUserRequest request)
@@ -46,5 +52,6 @@ public class User
         UserName   = request.UserName;
         Password   = CryptoSHA256.ConvertStringToSHA256(request.Password);
         CreateDate = new Date(DateTime.UtcNow);
+        UserGroup  = request.UserGroup;
     }
 }

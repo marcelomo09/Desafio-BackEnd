@@ -13,20 +13,20 @@ public class JwtService: ServiceBase
         _jwtSettings = jwtSettings;
     }
 
-    private static ClaimsIdentity GetClaimsIdentity(string userName)
+    private static ClaimsIdentity GetClaimsIdentity(string userGroup)
     {
         List<Claim> claims = new List<Claim>();
 
         claims.Add(new Claim("jti"          , Guid.NewGuid().ToString()));
-        claims.Add(new Claim("sub"          , userName));
-        claims.Add(new Claim(ClaimTypes.Role, userName));
+        claims.Add(new Claim("sub"          , userGroup));
+        claims.Add(new Claim(ClaimTypes.Role, userGroup));
 
-        return new ClaimsIdentity(new GenericIdentity(userName), claims);
+        return new ClaimsIdentity(new GenericIdentity(userGroup), claims);
     } 
 
-    public JwtToken CreateJwtToken(string userName)
+    public JwtToken CreateJwtToken(string userGroup)
     {
-        var identity      = GetClaimsIdentity(userName);
+        var identity      = GetClaimsIdentity(userGroup);
         var handler       = new JwtSecurityTokenHandler();
         var securityToken = handler.CreateToken(new SecurityTokenDescriptor { Subject            = identity,
                                                                               Issuer             = _jwtSettings.Value.Issuer,

@@ -11,9 +11,14 @@ public class CreateUserRequest
     [RegularExpression(@"^[A-Za-z0-9]{8}$", ErrorMessage = "Senha deve ter 8 caracteres compostos por números e/ou letras")]
     public string Password { get; set; }
 
+    [Required(ErrorMessage = "Favor o grupo do usuário")]
+    [ValiddateUserGroup]
+    public string UserGroup { get; set; }
+
     public CreateUserRequest()
     {
-        UserName = string.Empty;
-        Password = string.Empty;
+        UserName  = string.Empty;
+        Password  = string.Empty;
+        UserGroup = string.Empty;
     }
 }

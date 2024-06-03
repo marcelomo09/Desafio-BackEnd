@@ -1,11 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.Extensions.Options;
 
-public class ValidateTypeCNHAttribute : ValidationAttribute
+public class ValiddateUserGroupAttribute: ValidationAttribute
 {
-    public ValidateTypeCNHAttribute()
+    public ValiddateUserGroupAttribute()
     {
-
+        
     }
 
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
@@ -14,11 +14,11 @@ public class ValidateTypeCNHAttribute : ValidationAttribute
 
         var mongoSettings  = serviceProvider.GetRequiredService<IOptions<MongoSettings>>().Value;
 
-        var typesCNH = mongoSettings.Collections.DeliveryDrivers.TypesCNH;
+        var userGroups = mongoSettings.Collections.Users.UserGroups;
 
-        if (value != null && !typesCNH.Any(a => a == value.ToString()))
+        if (value != null && !userGroups.Any(a => a == value.ToString()))
         {
-            return new ValidationResult($"Tipo de carteira inválida, as permitidas são {string.Join(", ", typesCNH)}");
+            return new ValidationResult($"Grupo de usuário inválido, os grupos disponiveis são {string.Join(", ", userGroups)}");
         }
 
         return ValidationResult.Success;

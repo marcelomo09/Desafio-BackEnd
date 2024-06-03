@@ -113,7 +113,7 @@ using (var scope = app.Services.CreateScope())
 
     if (!context.Users.Any(u => u.UserName == "admin"))
     {
-        var user = new User() { UserName = "admin", Password = builder.Configuration.GetSection("Admin").Value ?? "" };
+        var user = new User() { UserName = "admin", UserGroup = "admin", Password = builder.Configuration.GetSection("Admin").Value ?? "" };
 
         context.Users.Add(user);
 

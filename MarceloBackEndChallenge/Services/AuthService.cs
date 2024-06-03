@@ -20,9 +20,9 @@ public class AuthService : ServiceBase
 
             if (user == null) return new Response(true, "Usuário não encontrado.", ResponseTypeResults.NotFound);
 
-            var token = _jwtService.CreateJwtToken(user.UserName);
+            var token = _jwtService.CreateJwtToken(user.UserGroup);
 
-            return new Response(false, $"{token.Type} {token.Access}");
+            return new Response(false, $"{token.Access}");
         }
         catch (Exception ex)
         {

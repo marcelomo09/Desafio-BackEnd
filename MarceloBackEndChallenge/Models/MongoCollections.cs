@@ -2,11 +2,11 @@ public class MongoCollections
 {
     public string Motorcycles { get; set; }
 
-    public string DeliveryDrivers { get; set; }
+    public DeliveryDriversSettings DeliveryDrivers { get; set; }
 
     public string MotorcycleRentals { get; set; }
 
-    public string Users { get; set; }
+    public UserSettings Users { get; set; }
 
     public RentalPricesTableSettings RentalsPricesTable { get; set; }
 
@@ -15,9 +15,9 @@ public class MongoCollections
     public MongoCollections()
     {
         Motorcycles        = string.Empty;
-        DeliveryDrivers    = string.Empty;
+        DeliveryDrivers    = new DeliveryDriversSettings();
         MotorcycleRentals  = string.Empty;
-        Users              = string.Empty;
+        Users              = new UserSettings();
         RentalsPricesTable = new RentalPricesTableSettings();
         RequestRides       = new RequestRidesSettings();
     }
