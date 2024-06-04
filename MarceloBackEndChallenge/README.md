@@ -1,11 +1,11 @@
-# Utilização e coferencia dos desafios do Projeto
+# Utilização e conferencia das soluções para os desafios
 ## Inicializando
 - Para usar o sistema primerio execute o comando do docker-compose para assim criar o container relicionado ao projeto para poder usar o MongoDB e RabbitMQ,
   também vale ressaltar que a aplicação utiliza Swagger que já encontra-se configurada no Program.cs
-    - Comando para criar o container do docker-compose docker-compose up -d
+    - Comando para criar o container do docker-compose "docker-compose up -d"
     - No browser acesse o endereço http://localhost:5271/swagger/ para ter acesso as funcionalidades do sistema
         - Usuário admin previamente cadastrado "userName = admin" - "password = a123"
-        - Ao entrar na página você terá que realizar a autenticação para usar as funcionalidades, o sistema valida autorizações tanto para admins quanto empregadores
+        - Ao entrar na página você terá que realizar a autenticação para usar as funcionalidades, o sistema valida autorizações tanto para admins quanto entregadores
         - Ocorrendo sucesso na autenticação copie o token que virá no campo message do response para o campo value do botão Authorize do Swagger
 
 ## Cadastrando usuários
@@ -13,7 +13,7 @@
     - Para cadastrar novos usuários utilize o metodo CreateUser da seção User
 
 ## Soluções do Desafio
-- Todas as funcionalidades citadas aqui seram acessadas pelos métodos disponiveis no Swagger
+Todas as funcionalidades citadas aqui seram acessadas pelos métodos disponiveis no Swagger
 
 - Eu como usuário admin quero cadastrar uma nova moto.
     - Acesse o método CreateMotorcycle da seção Motorcycle para incluír novas motos.
@@ -52,4 +52,4 @@
     - Para visualizar todos os entregadores que receberam notificação de novos pedido utilize o método GetAllNotificattionsDeliveryDrivers da seção RequestRace
 
 ## Considerações finais
-- Para efeito de conhecimento foi utilizado o Trello para gerenciamento de tarefas.
+Para efeito de conhecimento foi utilizado o Trello para gerenciamento de tarefas.
