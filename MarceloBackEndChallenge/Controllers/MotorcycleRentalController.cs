@@ -16,60 +16,32 @@ public class MotorcycleRentalController: ProjectControllerBase
     [HttpGet("GetAllMotorcycleRental")]
     public async Task<ActionResult> GetAllMotorcycleRental()
     {
-        try
-        {
-            var response = await _motorcycleRentalService.GetAll();
+        var response = await _motorcycleRentalService.GetAll();
 
-            return Ok(response);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest($"Ocorreu uma exceção durante o processamento: {ex.Message}");
-        }
+        return Ok(response);
     }
 
     [HttpGet("SimulationOfMotorcycleRentalValues")]
     public ActionResult SimulationOfMotorcycleRentalValues([FromQuery] SimulationOfMotorcycleRentalValuesRequest request)
     {
-        try
-        {
-            var response = _motorcycleRentalService.SimulationOfMotorcycleRentalValues(request);
+        var response = _motorcycleRentalService.SimulationOfMotorcycleRentalValues(request);
 
-            return SendResponseMessage(response);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest($"Ocorreu uma exceção durante o processamento: {ex.Message}");
-        }
+        return SendResponseMessage(response);
     }
 
     [HttpPost("CreateMotorcycleRental")]
     public async Task<ActionResult> CreateMotorcycleRental([FromForm] CreateMotorcycleRentalRequest request)
     {
-        try
-        {
-            var response = await _motorcycleRentalService.Create(request);
+        var response = await _motorcycleRentalService.Create(request);
 
-            return SendResponseMessage(response);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest($"Ocorreu uma exceção durante o processamento: {ex.Message}");
-        }
+        return SendResponseMessage(response);
     }
 
     [HttpPut("FinalizeRental")]
     public async Task<ActionResult> FinalizeRental(string cnh, string plate)
     {
-        try
-        {
-            var response = await _motorcycleRentalService.FinalizeRental(cnh, plate);
+        var response = await _motorcycleRentalService.FinalizeRental(cnh, plate);
 
-            return SendResponseMessage(response);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest($"Ocorreu uma exceção durante o processamento: {ex.Message}");
-        }
+        return SendResponseMessage(response);
     }
 }

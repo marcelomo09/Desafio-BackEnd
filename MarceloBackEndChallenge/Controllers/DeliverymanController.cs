@@ -16,60 +16,32 @@ public class DeliverymanController: ProjectControllerBase
     [HttpGet("GetAllDeliveryRiders")]
     public async Task<ActionResult> GetAllDeliveryRiders()
     {
-        try
-        {
-            var response = await _deliverymanService.GetAll();
+        var response = await _deliverymanService.GetAll();
 
-            return Ok(response);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest($"Ocorreu uma exceção durante o processamento: {ex.Message}");
-        }
+        return Ok(response);
     }
 
     [HttpPost("CreateDeliveryman")]
     public async Task<ActionResult> CreateDeliveryman([FromForm] CreateDeliverymanRequest request)
     {
-        try
-        {
-            var response = await _deliverymanService.Create(request);
+        var response = await _deliverymanService.Create(request);
 
-            return SendResponseMessage(response);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest($"Ocorreu uma exceção durante o processamento: {ex.Message}");
-        }
+        return SendResponseMessage(response);
     }
 
     [HttpDelete("DeleteDeliveryman")]
     public async Task<ActionResult> DeleteDeliveryman(string cnh)
     {
-        try
-        {
-            var response = await _deliverymanService.Delete(cnh);
+        var response = await _deliverymanService.Delete(cnh);
 
-            return SendResponseMessage(response);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest($"Ocorreu uma exceção durante o processamento: {ex.Message}");
-        }
+        return SendResponseMessage(response);
     }
 
     [HttpPut("UpdateImageCNHDeliveryman")]
     public async Task<ActionResult> UpdateImageCNHDeliveryman([FromForm] string cnh, IFormFile imageCNH)
     {
-        try
-        {
-            var response = await _deliverymanService.UpdateImageCNH(cnh, imageCNH);
+        var response = await _deliverymanService.UpdateImageCNH(cnh, imageCNH);
 
-            return SendResponseMessage(response);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest($"Ocorreu uma exceção durante o processamento: {ex.Message}");
-        }
+        return SendResponseMessage(response);
     }
 }

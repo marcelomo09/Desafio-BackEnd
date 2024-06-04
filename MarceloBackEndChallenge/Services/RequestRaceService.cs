@@ -22,9 +22,22 @@ public class RequestRaceService : ServiceBase
     /// Busca todos os pedidos já cadastrados
     /// </summary>
     /// <returns></returns>
-    public async Task<List<RequestRace>> GetAll()
+    public async Task<List<RequestRaceResponse>> GetAll()
     {
-        return await _dbContext.RequestRides.ToListAsync();
+        try
+        {
+            var races = await _dbContext.RequestRides.ToListAsync();
+
+            var response = new List<RequestRaceResponse>();
+
+            races.ForEach(x => response.Add(new RequestRaceResponse(x)));            
+
+            return response;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Ocorreu uma exceção na GetAllRequestRace da RequestRace: {ex.Message}");
+        }
     }
 
     #region Private Methods
@@ -125,8 +138,6 @@ public class RequestRaceService : ServiceBase
 
             if (response.Error) response.Message = $"O pedido foi registrado com sucesso! Porem ocorreram problemas na montagem de notificações: {response.Message}";
 
-            // response = ConsumeMessagesFromQueue();
-            
             return response.Error ? response : new Response(false, "Pedido registrado com sucesso!");
         }
         catch (Exception ex)
@@ -220,9 +231,15 @@ public class RequestRaceService : ServiceBase
     /// Busca todos os entregadores que receberam uma notificação
     /// </summary>
     /// <returns>Retorna uma lista de todos os entregadores que receberam uma notificação</returns>    
-    public async Task<List<NotificationsRequestDeliveryRiders>> GetAllNotificattionsDeliveryDrivers()
+    public async Task<List<NotificationsReqDeliveryRidersResponse>> GetAllNotificattionsDeliveryDrivers()
     {
-        return await _dbContext.NotificationsRequestDeliveryRiders.ToListAsync();
+        var notifications = await _dbContext.NotificationsRequestDeliveryRiders.ToListAsync();
+
+        var response = new List<NotificationsReqDeliveryRidersResponse>();
+
+        notifications.ForEach(x => response.Add(new NotificationsReqDeliveryRidersResponse(x)));
+
+        return response;
     }
 
     #endregion Public Methods

@@ -32,6 +32,8 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen(c =>
 {
+    Console.WriteLine("***** Adcionando o Swagger *****");
+
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = "JWT Authorization header using the Bearer scheme.",
@@ -79,12 +81,12 @@ builder.Services.AddAuthentication(options =>
     {
         OnChallenge = context => 
         {
-            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            context.Response.StatusCode  = StatusCodes.Status401Unauthorized;
             context.Response.ContentType = "application/json";
 
-            // Escreva a mensagem de não autorizado no corpo da resposta.
             var message = new { error = "Unauthorized", message = "Você não tem permissão para acessar este recurso." };
-            var json = JsonSerializer.Serialize(message);
+            var json    = JsonSerializer.Serialize(message);
+
             return context.Response.WriteAsync(json);
         }
     };
@@ -93,6 +95,8 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
+
+app.AddGlobalExceptions();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -16,75 +16,40 @@ public class MotorcycleController: ProjectControllerBase
     [HttpGet("GetAllMotorcycles")]
     public async Task<ActionResult> GetAllMotorcycles()
     {
-        try
-        {
-            var response = await _motorcycleService.GetAll();
+        var response = await _motorcycleService.GetAll();
 
-            return Ok(response);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest($"Ocorreu uma exceção durante o processamento: {ex.Message}");
-        }
+        return Ok(response);
     }
 
     [HttpGet("GetMotorcycleByPlate")]
     public async Task<ActionResult> GetMotorcycleByPlate([FromQuery] string plate)
     {
-        try
-        {
-            var response = await _motorcycleService.GetMotorcycleByPlate(plate);
+        var response = await _motorcycleService.GetMotorcycleByPlate(plate);
 
-            return !string.IsNullOrEmpty(response.Plate) ? Ok(response) : NotFound("Moto não encontrada.");
-        }
-        catch (Exception ex)
-        {
-            return BadRequest($"Ocorreu uma exceção durante o processamento: {ex.Message}");
-        }
+        return !string.IsNullOrEmpty(response.Plate) ? Ok(response) : NotFound("Moto não encontrada.");
     }
 
     [HttpPost("CreateMotorcycle")]
     public async Task<ActionResult> CreateMotorcycle([FromForm] CreateMotorcycleRequest request)
     {
-        try
-        {
-            var response = await _motorcycleService.Create(request);
+        var response = await _motorcycleService.Create(request);
 
-            return SendResponseMessage(response);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest($"Ocorreu uma exceção durante o processamento: {ex.Message}");
-        }
+        return SendResponseMessage(response);
     }
 
     [HttpDelete("DeleteMotorcycle")]
     public async Task<ActionResult> DeleteMotorcycle(string plate)
     {
-        try
-        {
-            var response = await _motorcycleService.Delete(plate);
+        var response = await _motorcycleService.Delete(plate);
 
-            return SendResponseMessage(response);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest($"Ocorreu uma exceção durante o processamento: {ex.Message}");
-        }
+        return SendResponseMessage(response);
     }
 
     [HttpPut("UpdateMotorcyclePlate")]
     public async Task<ActionResult> UpdateMotorcyclePlate(string oldPlate, string newPlate)
     {
-        try
-        {
-            var response = await _motorcycleService.UpdatePlate(oldPlate, newPlate);
+        var response = await _motorcycleService.UpdatePlate(oldPlate, newPlate);
 
-            return SendResponseMessage(response);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest($"Ocorreu uma exceção durante o processamento: {ex.Message}");
-        }
+        return SendResponseMessage(response);
     }
 }

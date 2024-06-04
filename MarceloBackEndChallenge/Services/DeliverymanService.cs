@@ -55,9 +55,22 @@ public class DeliverymanService: ServiceBase
     /// Busca uma lista de todos os entregadores cadastrados
     /// </summary>
     /// <returns>Retorno da lista de todos entregadores cadastrados</returns>
-    public async Task<List<Deliveryman>> GetAll()
+    public async Task<List<DeliverymanResponse>> GetAll()
     {
-        return await _dbContext.DeliveryDrivers.ToListAsync();
+        try
+        {
+            var delioveryDrivers =  await _dbContext.DeliveryDrivers.ToListAsync();
+
+            var response = new List<DeliverymanResponse>();
+
+            delioveryDrivers.ForEach(x => response.Add(new DeliverymanResponse(x)));
+
+            return response;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Ocorreu uma exceção na GetAll da DeliverymanService: {ex.Message}");
+        }
     }
 
     /// <summary>
@@ -67,27 +80,34 @@ public class DeliverymanService: ServiceBase
     /// <returns>Retorna uma resposta do processo de cadastro do entregador</returns>
     public async Task<Response> Create(CreateDeliverymanRequest request)
     {
-        // Verifica se o CNPJ já não está cadastrado
-        var deliverymanCNPJExists = await _dbContext.DeliveryDrivers.FirstOrDefaultAsync(x => x.CNPJ == request.CNPJ);
+        try
+        {
+            // Verifica se o CNPJ já não está cadastrado
+            var deliverymanCNPJExists = await _dbContext.DeliveryDrivers.FirstOrDefaultAsync(x => x.CNPJ == request.CNPJ);
 
-        if (deliverymanCNPJExists != null) return new Response(true, $"CNPJ já cadastrado para o entregador {deliverymanCNPJExists.CNPJ}", ResponseTypeResults.BadRequest);
+            if (deliverymanCNPJExists != null) return new Response(true, $"CNPJ já cadastrado para o entregador {deliverymanCNPJExists.CNPJ}", ResponseTypeResults.BadRequest);
 
-        // Verifica se a CNH já não está cadastrada
-        var deliverymanCNHExists = await _dbContext.DeliveryDrivers.FirstOrDefaultAsync(x => x.CNH == request.CNH);
+            // Verifica se a CNH já não está cadastrada
+            var deliverymanCNHExists = await _dbContext.DeliveryDrivers.FirstOrDefaultAsync(x => x.CNH == request.CNH);
 
-        if (deliverymanCNHExists != null) return new Response(true, $"CNH já cadastrado para o entregador {deliverymanCNHExists.CNH}", ResponseTypeResults.BadRequest);
+            if (deliverymanCNHExists != null) return new Response(true, $"CNH já cadastrado para o entregador {deliverymanCNHExists.CNH}", ResponseTypeResults.BadRequest);
 
-        // Valida e salva a foto da CNH
-        var responseImageCNH = await GetPathImageCNHPathAndSaveOrReplace(request.ImageCNH);
+            // Valida e salva a foto da CNH
+            var responseImageCNH = await GetPathImageCNHPathAndSaveOrReplace(request.ImageCNH);
 
-        if (responseImageCNH.Error) return responseImageCNH;
+            if (responseImageCNH.Error) return responseImageCNH;
 
-        // Cadastra o entregador
-        await _dbContext.DeliveryDrivers.AddAsync(new Deliveryman(responseImageCNH.Message, request));
+            // Cadastra o entregador
+            await _dbContext.DeliveryDrivers.AddAsync(new Deliveryman(responseImageCNH.Message, request));
 
-        await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
 
-        return new Response(false, "Entregador cadastrado com sucesso!");
+            return new Response(false, "Entregador cadastrado com sucesso!");
+        }
+        catch (Exception ex)
+        {
+            return new Response(true, $"Ocorreu uma exceção no processo de inclusão do entregador: {ex.Message}");
+        }
     }
 
     /// <summary>
@@ -97,15 +117,22 @@ public class DeliverymanService: ServiceBase
     /// <returns>Retorna uma resposta do processo de exclusão do entregador</returns>
     public async Task<Response> Delete(string cnh)
     {
-        var deliveryman = await _dbContext.DeliveryDrivers.FirstOrDefaultAsync(x => x.CNH == cnh);
+        try
+        {
+            var deliveryman = await _dbContext.DeliveryDrivers.FirstOrDefaultAsync(x => x.CNH == cnh);
 
-        if (deliveryman == null) return new Response(true, "Entregador não encontrado.", ResponseTypeResults.BadRequest);
+            if (deliveryman == null) return new Response(true, "Entregador não encontrado.", ResponseTypeResults.BadRequest);
 
-        _dbContext.DeliveryDrivers.Remove(deliveryman);
+            _dbContext.DeliveryDrivers.Remove(deliveryman);
 
-        await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
 
-        return new Response(false, "Entregador excluído com sucesso!");
+            return new Response(false, "Entregador excluído com sucesso!");
+        }
+        catch (Exception ex)
+        {
+            return new Response(true, $"Ocorreu uma exceção no processo de exclusão do entregador: {ex.Message}");
+        }
     }
 
     /// <summary>
@@ -116,25 +143,32 @@ public class DeliverymanService: ServiceBase
     /// <returns>Retorna uma resposta do processo de atualização da foto de CNH do entregador</returns>
     public async Task<Response> UpdateImageCNH(string cnh, IFormFile imageCNH)
     {
-        // Busca o entregador ao qual terá a foto da cnh alterada
-        var deliveryman = await _dbContext.DeliveryDrivers.FirstOrDefaultAsync(x => x.CNH == cnh);
+        try
+        {
+            // Busca o entregador ao qual terá a foto da cnh alterada
+            var deliveryman = await _dbContext.DeliveryDrivers.FirstOrDefaultAsync(x => x.CNH == cnh);
 
-        if (deliveryman == null) return new Response(true, "Entregador não encontrado.", ResponseTypeResults.NotFound);
+            if (deliveryman == null) return new Response(true, "Entregador não encontrado.", ResponseTypeResults.NotFound);
 
-        // Valida e salva a foto da CNH
-        var responseImageCNH = await GetPathImageCNHPathAndSaveOrReplace(imageCNH);
+            // Valida e salva a foto da CNH
+            var responseImageCNH = await GetPathImageCNHPathAndSaveOrReplace(imageCNH);
 
-        if (responseImageCNH.Error) return responseImageCNH;
+            if (responseImageCNH.Error) return responseImageCNH;
 
-        // Excluí o arquivo anterior caso o novo tenha um nome diferente
-        if (deliveryman.ImageCNHPath != responseImageCNH.Message && File.Exists(deliveryman.ImageCNHPath)) File.Delete(deliveryman.ImageCNHPath);
+            // Excluí o arquivo anterior caso o novo tenha um nome diferente
+            if (deliveryman.ImageCNHPath != responseImageCNH.Message && File.Exists(deliveryman.ImageCNHPath)) File.Delete(deliveryman.ImageCNHPath);
 
-        // Atualiza o dado da foto da CNH
-        deliveryman.ImageCNHPath = responseImageCNH.Message;
+            // Atualiza o dado da foto da CNH
+            deliveryman.ImageCNHPath = responseImageCNH.Message;
 
-        await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
 
-        return new Response(false, "Foto da CNH do entregador atualizada com sucesso!");
+            return new Response(false, "Foto da CNH do entregador atualizada com sucesso!");
+        }
+        catch (Exception ex)
+        {
+            return new Response(true, $"Ocorreu uma exceção no processo de atualização da foto do entregador: {ex.Message}");
+        }
     }
 
     #endregion Public Methods

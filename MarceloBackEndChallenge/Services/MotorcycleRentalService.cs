@@ -63,9 +63,15 @@ public class MotorcycleRentalService : ServiceBase
     /// Busca todas as locações de motos realizadas
     /// </summary>
     /// <returns></returns>
-    public async Task<List<MotorcycleRental>> GetAll()
-    {
-        return await _dbContext.MotorcycleRentals.ToListAsync();
+    public async Task<List<MotorcycleRentalResponse>> GetAll()
+    {   
+        var motorcycleRentals = await _dbContext.MotorcycleRentals.ToListAsync();
+
+        var response = new List<MotorcycleRentalResponse>();
+
+        motorcycleRentals.ForEach(x => response.Add(new MotorcycleRentalResponse(x)));
+
+        return response;
     }
 
     /// <summary>

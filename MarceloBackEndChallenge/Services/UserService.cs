@@ -11,11 +11,22 @@ public class UserService : ServiceBase
     /// Busca todos os usuários cadastrados
     /// </summary>
     /// <returns>Retorna a lista dos usuários cadastrados</returns>
-    public async Task<List<User>> GetAll()
+    public async Task<List<UserResponse>> GetAll()
     {
-        var users = await _dbContext.Users.ToListAsync();
+        try
+        {
+            var users = await _dbContext.Users.ToListAsync();
 
-        return users;
+            var response = new List<UserResponse>();
+
+            users.ForEach(x => response.Add(new UserResponse(x)));
+
+            return response;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Ocorreu uma exceção na GetALl da Users {ex.Message}");
+        }
     }
 
     /// <summary>

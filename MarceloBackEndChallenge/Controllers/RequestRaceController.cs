@@ -15,16 +15,9 @@ public class RequestRaceController : ProjectControllerBase
     [HttpGet("GetAllRequestRace")]
     public async Task<ActionResult> GetAllRequestRace()
     {
-        try
-        {
-            var response = await _requestRaceService.GetAll();
+        var response = await _requestRaceService.GetAll();
 
-            return Ok(response);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest($"Ocorreu uma exceção durante o processamento: {ex.Message}");
-        }
+        return Ok(response);
     }
 
     [Authorize(Roles = "admin")]

@@ -43,10 +43,10 @@ Todas as funcionalidades citadas aqui seram acessadas pelos métodos disponiveis
     - Para realizar essa rotina utilize o método CreateRequestRace da seção RequestRace
 
 - Eu como entregador quero aceitar um pedido.
-    - Para o entregador aceitar um pedido utilize o método AcceptRequestRace da seção RequestRace
+    - Para o entregador aceitar um pedido utilize o método AcceptRequestRace da seção RequestRace, os dados do campo idRequestRace podem ser obtidos na GetAllRequestRace que pertence a mesma seção RequestRace
 
  - Eu como entregador quero efetuar a entrega do pedido.
-    - Para o entregador entregar um pedido utilize o método DeliverRequestRace da seção RequestRace
+    - Para o entregador entregar um pedido utilize o método DeliverRequestRace da seção RequestRace, os dados do campo idRequestRace podem ser obtidos na GetAllRequestRace que pertence a mesma seção RequestRace
 
 - Eu como admin quero consultar todos entregadoeres que foram notificados de um pedido.
     - Para visualizar todos os entregadores que receberam notificação de novos pedido utilize o método GetAllNotificattionsDeliveryDrivers da seção RequestRace
