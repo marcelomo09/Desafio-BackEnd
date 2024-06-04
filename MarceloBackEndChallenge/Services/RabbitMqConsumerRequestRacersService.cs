@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Text;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -12,13 +13,17 @@ public class RabbitMqConsumerService : BackgroundService
     private IModel _channel;
     private IConnection _connection;
 
-    public RabbitMqConsumerService(ILogger<RabbitMqConsumerService> logger, IServiceProvider serviceProvider)
+    public RabbitMqConsumerService(ILogger<RabbitMqConsumerService> logger, IServiceProvider serviceProvider, IOptions<RabbitMQSettings> rabbitmqSettings)
     {
+        var config = rabbitmqSettings.Value;
+
         _logger          = logger;
         _serviceProvider = serviceProvider;
-        var factory      = new ConnectionFactory() { HostName = "localhost" };
-        _connection      = factory.CreateConnection();
-        _channel         = _connection.CreateModel();
+
+        var factory = new ConnectionFactory() { HostName = config.HostName, UserName = config.UserName, Password = config.Password, Port = config.Port };
+        
+        _connection = factory.CreateConnection();
+        _channel    = _connection.CreateModel();
     }
 
     protected override Task ExecuteAsync(CancellationToken stoppingToken)

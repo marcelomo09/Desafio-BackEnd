@@ -10,9 +10,12 @@ public class RequestRaceService : ServiceBase
 {
     private readonly IOptions<MongoSettings> _settings;
 
-    public RequestRaceService(MongoDBContext mongoDBContext, IOptions<MongoSettings> settings) : base(mongoDBContext)
+    private readonly IOptions<RabbitMQSettings> _rabbitmqSettings;
+
+    public RequestRaceService(MongoDBContext mongoDBContext, IOptions<MongoSettings> settings, IOptions<RabbitMQSettings> rabbitmqSettings) : base(mongoDBContext)
     {
-        _settings = settings;
+        _settings         = settings;
+        _rabbitmqSettings = rabbitmqSettings;
     }
 
     /// <summary>
@@ -38,7 +41,7 @@ public class RequestRaceService : ServiceBase
         {
             if (deliveryDrivers == null || deliveryDrivers.Count == 0) return new Response();
 
-            var factory = new ConnectionFactory() { HostName = "localhost" };
+            var factory = new ConnectionFactory() { HostName = _rabbitmqSettings.Value.HostName, UserName = _rabbitmqSettings.Value.UserName, Password = _rabbitmqSettings.Value.Password, Port = _rabbitmqSettings.Value.Port };
 
             using (var connection = factory.CreateConnection())
             {
